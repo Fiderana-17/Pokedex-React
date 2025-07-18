@@ -41,15 +41,13 @@ npm run dev
 ---
 
 
-## 🤝 Collabolateurs
+## 🤝 Collaborateurs
 
 Ce projet a été réalisé dans le cadre d’un travail en classe à HEI, par les personnes suivantes :
 -  Fiderana
 -  David
--  Tsila
+-  Tsilavina
 -  Mandrindra
 
 
 ---
-
-
