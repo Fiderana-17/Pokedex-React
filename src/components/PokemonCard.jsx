@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FaSpinner } from 'react-icons/fa';
 
-function PokemonCard() {
+function PokemonCard({ activeTypes }) {
   const [pokemons, setPokemons] = useState([]);
   const [pokemonDetails, setPokemonDetails] = useState({});
-      const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getIdFromUrl = (url) => {
     const parts = url.split('/');
@@ -12,63 +14,77 @@ function PokemonCard() {
   };
 
   useEffect(() => {
-    axios.get('https://pokeapi.co/api/v2/pokemon?limit=1300')
-      .then(res => {
+    const fetchPokemons = async () => {
+      setIsLoading(true);
+      try {
+        const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=300');
         setPokemons(res.data.results);
 
-        res.data.results.forEach(pokemon => {
-          axios.get(pokemon.url)
-            .then(resDetail => {
-              setPokemonDetails(prev => ({
-                ...prev,
-                [pokemon.name]: resDetail.data
-              }));
-            });
-        });
-      });
+        const detailsData = {};
+        await Promise.all(
+          res.data.results.map(async (pokemon) => {
+            const resDetail = await axios.get(pokemon.url);
+            detailsData[pokemon.name] = resDetail.data;
+          })
+        );
+        setPokemonDetails(detailsData);
+      } catch (error) {
+        console.error('Erreur lors du chargement des pokémons', error);
+      }
+      setIsLoading(false);
+    };
+
+    fetchPokemons();
   }, []);
+
+  // Filtrage selon les types sélectionnés
+  const filteredPokemons = pokemons.filter((p) => {
+    const details = pokemonDetails[p.name];
+    if (!details) return false;
+    if (activeTypes.includes('all')) return true;
+
+    const types = details.types.map((t) => t.type.name.toLowerCase());
+    return activeTypes.some(type => types.includes(type));
+  });
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4">
-        {pokemons.map((pokemon) => {
-          const id = getIdFromUrl(pokemon.url);
-          const details = pokemonDetails[pokemon.name];
+      {isLoading ? (
+        <div className="flex justify-center items-center py-20">
+          <FaSpinner className="animate-spin text-4xl text-sky-500" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4">
+          {filteredPokemons.map((pokemon) => {
+            const id = getIdFromUrl(pokemon.url);
+            const details = pokemonDetails[pokemon.name];
 
-          return (
-            <div
-              key={pokemon.name}
-              className="p-4 bg-sky-300 shadow rounded text-center flex flex-col-reverse items-center hover:scale-110 duration-200 gap-3 cursor-pointer"
-              onClick={() => setSelectedPokemon(pokemon.name)}
-            >
-              {details ? (
+            return (
+              <div
+                key={pokemon.name}
+                className="p-4 bg-gradient-to-br from-sky-300 to-sky-500 text-slate-900 shadow-lg rounded-xl text-center flex flex-col-reverse items-center hover:scale-110 duration-200 gap-3 cursor-pointer"
+                onClick={() => setSelectedPokemon(pokemon.name)}
+              >
                 <p className="text-sm italic capitalize">
                   {details.types.map(t => t.type.name).join(', ')}
                 </p>
-              ) : (
-                <p className="text-sm italic">Loading types...</p>
-              )}
-              <p className="font-bold">{pokemon.name}</p> 
-              <img
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-                alt={pokemon.name}
-                className="mx-auto w-32 h-32 object-contain drop-shadow-md rounded-full p-2 mb-2 bg-sky-50 hover:scale-110 duration-200"
-              />
-              <p>#{id}</p>
-            </div>
-          );
-        })}
-      </div>
-      {/* Modale pour les stats */}
+                <p className="font-bold capitalize">{pokemon.name}</p>
+                <img
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
+                  alt={pokemon.name}
+                  className="mx-auto w-32 h-32 object-contain drop-shadow-md rounded-full p-2 mb-2 bg-sky-100"
+                />
+                <p className="text-xs">#{id}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Modal avec détails */}
       {selectedPokemon && pokemonDetails[selectedPokemon] && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          {/* Backdrop */}
-          <div
-            className=""
-            onClick={() => setSelectedPokemon(null)}
-          />
-          {/* Contenu de la modale */}
-          <div className="relative z-10 bg-sky-900 text-white rounded-xl shadow-xl p-8 w-full max-w-md mx-auto flex flex-col items-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative z-10 bg-sky-900 text-white rounded-xl shadow-2xl p-8 w-full max-w-md mx-auto flex flex-col items-center">
             <button
               className="absolute top-2 right-2 text-white bg-red-500 rounded-full px-3 py-1 text-sm font-bold hover:bg-red-700"
               onClick={() => setSelectedPokemon(null)}
@@ -76,9 +92,9 @@ function PokemonCard() {
               X
             </button>
             <img
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${getIdFromUrl(pokemonDetails[selectedPokemon].species.url || pokemonDetails[selectedPokemon].id)}.png`}
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonDetails[selectedPokemon].id}.png`}
               alt={selectedPokemon}
-              className="w-40 h-40 object-contain drop-shadow-md rounded-full mb-4 bg-sky-50"
+              className="w-40 h-40 object-contain drop-shadow-md rounded-full mb-4 bg-sky-100"
             />
             <h2 className="text-2xl font-bold mb-2 capitalize">{selectedPokemon}</h2>
             <p className="mb-2 italic text-sky-300">
