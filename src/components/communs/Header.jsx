@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Menu, Zap } from "lucide-react";
-
+import RotatingButton from './bouttons';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center gap-70">
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-blue-500 rounded-full flex items-center justify-center ml-11">
               <Zap className="w-6 h-6 text-white" />
@@ -31,7 +31,11 @@ const Header = () => {
             <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
               Fonctionnalités
             </a>
+         
           </nav>
+          <div className='flex ml-10'>
+             <RotatingButton/>
+          </div>
 
           <div className="flex items-center space-x-2">
             <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -59,6 +63,7 @@ const Header = () => {
             </div>
           </nav>
         )}
+    
       </div>
     </header>
   );
