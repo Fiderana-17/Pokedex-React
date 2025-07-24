@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Details from "./PokemonDetailsModal";
 import Card from "./Card";
-import pokemon from "./Pokemon";
+import pokemon from "../../Assets/JS/Pokemon";
 
 const populaires = ["latios", "charizard", "mewtwo", "greninja", "lucario", "gengar", "dragonite", "latias"];
 
