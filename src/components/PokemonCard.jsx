@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 
-function PokemonCard({ activeTypes }) {
+function PokemonCard({ activeTypes, searchQuery }) {
   const [pokemons, setPokemons] = useState([]);
   const [pokemonDetails, setPokemonDetails] = useState({});
   const [selectedPokemon, setSelectedPokemon] = useState(null);
@@ -41,9 +41,18 @@ function PokemonCard({ activeTypes }) {
   const filteredPokemons = pokemons.filter((p) => {
     const details = pokemonDetails[p.name];
     if (!details) return false;
-    if (activeTypes.includes('all')) return true;
 
-    const types = details.types.map((t) => t.type.name.toLowerCase());
+    const name = p.name.toLowerCase();
+    const types = details.types.map(t => t.type.name.toLowerCase());
+
+    if (searchQuery.trim() !== '') {
+      return (
+        name.includes(searchQuery) ||
+        types.some(type => type.includes(searchQuery))
+      );
+    }
+
+    if (activeTypes.includes('all')) return true;
     return activeTypes.some(type => types.includes(type));
   });
 
