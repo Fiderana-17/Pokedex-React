@@ -1,21 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from "./pages/LandingPage"
-import PokemonPage from './pages/PokemonPage';
+import Accueil from "./pages/LandingPage";
+import Pokemon from "./pages/PokemonPage";
+import TypesPokemonSection from "./components/sections/TypesPokemonSection"
+import FonctionnalitésSections from './components/sections/FonctionnalitésSections';
 
 function App() {
- 
-
   return (
-    <>
     <Router>
       <Routes>
-        <Route path='/' element={<LandingPage/>}/>
-        <Route path='/pokemon' element={<PokemonPage/>}/>
-        <Route></Route>
+        <Route path="/" element={<Accueil />} />
+        <Route path="/pokemon" element={<Pokemon />}/>
       </Routes>
     </Router>
-    </>
-  )
+  );
 }
 
-export default App
+
+export default App;

@@ -5,7 +5,7 @@ import { RiUserCommunityFill } from 'react-icons/ri';
 
 function FonctionnalitésSections() {
   return (
-    <section className="bg-white text-gray-900 py-20">
+    <section id="section" className="bg-white text-gray-900 py-20">
           <div className="flex flex-col items-center">
             <h2 className="text-3xl font-bold text-center mb-12">
               Fonctionnalités principales
