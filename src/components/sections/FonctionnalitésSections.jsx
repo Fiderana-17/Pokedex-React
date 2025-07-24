@@ -10,7 +10,7 @@ function FonctionnalitésSections() {
             <h2 className="text-3xl font-bold text-center mb-12">
               Fonctionnalités principales
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">  
+            <div className="grid grid-cols-1 md:flex gap-10">  
 
             {/* Fonctionnalités */}
               <div className="bg-gray-100 p-6 rounded-xl shadow-md w-2xs transform hover:-translate-y-2 transition-transform duration-300">
@@ -61,48 +61,7 @@ function FonctionnalitésSections() {
                   informations essentielles sur chaque Pokémon.
                 </p>
               </div>
-
-
-              <div className="bg-gray-100 p-6 rounded-xl shadow-md w-2xs transform hover:-translate-y-2 transition-transform duration-300">
-                <div className="bg-orange-400 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                  <RiUserCommunityFill/>
-                </div>
-                
-                
-                <h3 className="text-xl font-bold mb-2">
-                  Communauté
-                </h3>
-                <p>
-                  Partagés vos équipes et découvrez celles des autres dresseurs
-                </p>
-              </div>
-
-              <div className="bg-gray-100 p-6 rounded-xl shadow-md w-2xs transform hover:-translate-y-2 transition-transform duration-300">
-                <div className="bg-red-400 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                  <IoGameController />
-                </div>
-                <h3 className="text-xl font-bold mb-2">
-                  Mode hors ligne
-                </h3>
-                <p>
-                  Accédez à vos données mmême sans connexion internet
-                </p>
-              </div>
-
-              <div className="bg-gray-100 p-6 rounded-xl shadow-md w-2xs transform hover:-translate-y-2 transition-transform duration-300">
-                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                  <img
-                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
-                    alt="Recherche"
-                    className="w-10 h-10"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Recherche avancée</h3>
-                <p>
-                  Trouvez instantanément n'importe quel Pokémon par son nom ou
-                  son numéro dans le Pokédex.
-                </p>
-              </div>
+            
 
               <div className="bg-gray-100 p-6 rounded-xl shadow-md w-2xs transform hover:-translate-y-2 transition-transform duration-300">
                 <div className="bg-blue-400 w-16 h-16 rounded-full flex items-center justify-center mb-4">
