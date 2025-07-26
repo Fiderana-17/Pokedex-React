@@ -46,6 +46,12 @@ const Header = () => {
             >
               Fonctionnalités
             </a>
+            <Link 
+              to="/favoris" 
+              className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors font-medium"
+            >
+              Mes favoris
+            </Link>
           </nav>
 
           {/* Right Section - Button and Menu */}
