@@ -32,13 +32,14 @@ function Details({ pokemon, onClose }) {
   if (!pokemon) return null;
 
   const fullStats = {
-    hp: pokemon.stats?.hp || 0,
-    attack: pokemon.stats?.attack || 0,
-    defense: pokemon.stats?.defense || 0,
-    "sp. attack": pokemon.stats?.["sp. attack"] || 0,
-    "sp. defense": pokemon.stats?.["sp. defense"] || 0,
-    speed: pokemon.stats?.speed || 0,
+    hp: pokemon.stats?.["hp"] || 0,
+    attack: pokemon.stats?.["attack"] || 0,
+    defense: pokemon.stats?.["defense"] || 0,
+    "sp. atk": pokemon.stats?.["special-attack"] || 0,
+    "sp. def": pokemon.stats?.["special-defense"] || 0,
+    speed: pokemon.stats?.["speed"] || 0,
   };
+
 
   const totalStats = Object.values(fullStats).reduce((sum, val) => sum + val, 0);
   const displayedImage = isShiny && pokemon.shinyImage ? pokemon.shinyImage : pokemon.image;
@@ -49,12 +50,11 @@ function Details({ pokemon, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-49">
-      <div
-  className={`p-6 rounded-xl shadow-lg w-[90%] max-w-2xl relative bg-gradient-to-br from-blue-50 via-white to-red-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 ${textColor}`}>
+      <div className={`text-white p-6 rounded-xl shadow-lg w-[90%] max-w-2xl relative bg-gradient-to-br from-blue-50 via-white to-red-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 ${textColor}`}>
 
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 ${textColor} hover:bg-white/20 rounded-full p-1 duration-200`}
+          className={`text-white absolute top-4 right-4 ${textColor} hover:bg-white/20 rounded-full p-1 duration-200`}
         >
           <X className="w-6 h-6" />
         </button>
@@ -96,7 +96,7 @@ function Details({ pokemon, onClose }) {
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 ">
             <h3 className="text-xl font-bold mb-4">Base Stats</h3>
             <div className="grid grid-cols-2 gap-4">
               {Object.entries(fullStats).map(([stat, value]) => (
