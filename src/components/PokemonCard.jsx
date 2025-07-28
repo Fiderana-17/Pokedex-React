@@ -54,7 +54,7 @@ function PokemonCard({ activeTypes, searchQuery }) {
     const fetchPokemons = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=300');
+        const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1302');
         setPokemons(res.data.results);
 
         const detailsData = {};
