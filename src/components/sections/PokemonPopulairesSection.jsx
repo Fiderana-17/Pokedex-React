@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import Details from "./PokemonDetailsModal";
 import Card from "./Card";
 import pokemon from "../../Assets/JS/Pokemon";
+import useDarkMode from "../../Assets/JS/useDarkMode";
 
 const populaires = ["latios", "charizard", "mewtwo", "greninja", "lucario", "gengar", "dragonite", "latias"];
 
 export default function PokemonPopulairesSection() {
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [pokemons, setPokemons] = useState([]);
+  const isDark = useDarkMode();
 
   useEffect(() => {
     const fetchPokemons = async () => {
@@ -18,8 +20,8 @@ export default function PokemonPopulairesSection() {
   }, []);
 
   return (
-    <section className="p-6 flex flex-col bg-white">
-      <h2 className="text-4xl font-bold mb-4 text-center text-gray-800 ">
+    <section className={`p-6 flex flex-col transition-colors duration-300 ${isDark ?   'bg-white' :'bg-gray-900 '} `}>;
+      <h2 className= {`text-4xl font-bold mb-4 text-center  transition-colors duration-300 ${isDark ? 'text-gray-800':'text-white'} `}>
         Pokémon Populaires
       </h2>
 

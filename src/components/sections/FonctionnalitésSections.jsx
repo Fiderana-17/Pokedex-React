@@ -2,12 +2,14 @@ import { FaInfoCircle, FaSearch } from 'react-icons/fa';
 import { IoGameController, IoStatsChart } from 'react-icons/io5';
 import { MdDarkMode, MdFavorite } from 'react-icons/md';
 import { RiUserCommunityFill } from 'react-icons/ri';
+import useDarkMode from '../../Assets/JS/useDarkMode';
 
 function FonctionnalitésSections() {
+  const isDark = useDarkMode();
   return (
-    <section id="section" className="bg-white text-gray-900 py-20">
+    <section id="section" className={`  py-20 transition-colors duration-300  text-gray-900 ${isDark ? 'bg-white ' : 'bg-gray-900 '}`}>
           <div className="flex flex-col items-center">
-            <h2 className="text-3xl font-bold text-center mb-12">
+            <h2 className={`text-3xl font-bold text-center mb-12 transition-colors duration-300 ${isDark ? 'text-gray-900' : ' text-white'}`}>
               Fonctionnalités principales
             </h2>
             <div className="grid grid-cols-1 md:flex gap-10">  

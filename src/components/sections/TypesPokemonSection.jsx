@@ -1,7 +1,9 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '../ui/Card';
 import {Flame, Droplets, Leaf,BellElectricIcon as Electric, Snowflake, Shield, Skull, Mountain} from "lucide-react"
+import useDarkMode from '../../Assets/JS/useDarkMode';
 
 function TypesPokemonSection() {
+    const isDark = useDarkMode();
     const pokemonTypes = [
         { name: "Feu", icon: Flame, color: "from-red-500 to-orange-500", count: 89 },
         { name: "Eau", icon: Droplets, color: "from-blue-500 to-cyan-500", count: 144 },
@@ -14,11 +16,11 @@ function TypesPokemonSection() {
     ]
 
     return (
-        <section className="py-16">
+        <section className={`py-16 transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-white text-gray-' } `} >
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">Explorer par Type</h2>
-                    <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    <h2 className={`text-3xl md:text-4xl font-bold mb-4 transition-colors duration-300${isDark ? 'text-white' : ' text-gray-900' } `}>Explorer par Type</h2>
+                    <p className="text-gray-600 max-w-2xl mx-auto">
                     Chaque type a ses propres caractéristiques et stratégies uniques
                     </p>
                 </div>
