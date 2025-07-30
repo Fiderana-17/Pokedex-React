@@ -35,8 +35,8 @@ function Details({ pokemon, onClose }) {
     hp: pokemon.stats?.["hp"] || 0,
     attack: pokemon.stats?.["attack"] || 0,
     defense: pokemon.stats?.["defense"] || 0,
-    "sp. atk": pokemon.stats?.["special-attack"] || 0,
-    "sp. def": pokemon.stats?.["special-defense"] || 0,
+    "sp. attack": pokemon.stats?.["sp. attack"] || 0,
+    "sp. defense": pokemon.stats?.["sp. defense"] || 0,
     speed: pokemon.stats?.["speed"] || 0,
   };
 
