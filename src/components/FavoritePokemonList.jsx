@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 import Details from './sections/PokemonDetailsModal';
+import { Trash2 } from "lucide-react";
 
-
-function PokemonCard({ activeTypes, searchQuery }) {
+function FavoritePokemonList() {
   const [pokemons, setPokemons] = useState([]);
   const [pokemonDetails, setPokemonDetails] = useState({});
   const [selectedPokemon, setSelectedPokemon] = useState(null);
@@ -54,104 +54,94 @@ function PokemonCard({ activeTypes, searchQuery }) {
     const fetchPokemons = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1302');
-        setPokemons(res.data.results);
+        const promises = favoriteList.map(async (name) => {
+          const resDetail = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+          const id = resDetail.data.id;
+          const resSpecies = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}/`);
 
-        const detailsData = {};
-        await Promise.all(
-          res.data.results.map(async (pokemon) => {
-            const resDetail = await axios.get(pokemon.url);
-            const id = resDetail.data.id;
-            const resSpecies = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}/`);
-
-            detailsData[pokemon.name] = {
+          return {
+            name,
+            data: {
               ...resDetail.data,
               color: resSpecies.data.color?.name || 'default',
               habitat: resSpecies.data.habitat?.name || 'Unknown',
               is_legendary: resSpecies.data.is_legendary || false,
-            };
-          })
-        );
-        setPokemonDetails(detailsData);
+            },
+          };
+        });
+
+        const results = await Promise.all(promises);
+        const details = {};
+        results.forEach(({ name, data }) => {
+          details[name] = data;
+        });
+        setPokemonDetails(details);
       } catch (error) {
-        console.error('Erreur lors du chargement des pokémons', error);
+        console.error('Erreur lors du chargement des favoris', error);
       }
       setIsLoading(false);
     };
 
-    fetchPokemons();
-  }, []);
+    if (favoriteList.length > 0) fetchPokemons();
+    else setIsLoading(false);
+  }, [favoriteList]);
 
-  const filteredPokemons = pokemons.filter((p) => {
-    const details = pokemonDetails[p.name];
-    if (!details) return false;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <FaSpinner className="animate-spin text-4xl text-sky-500" />
+      </div>
+    );
+  }
 
-    const name = p.name.toLowerCase();
-    const types = details.types.map(t => t.type.name.toLowerCase());
-
-    if (searchQuery.trim() !== '') {
-      return (
-        name.includes(searchQuery) ||
-        types.some(type => type.includes(searchQuery))
-      );
-    }
-
-    if (activeTypes.includes('all')) return true;
-    return activeTypes.some(type => types.includes(type));
-  });
+  if (favoriteList.length === 0) {
+    return <p className="text-center py-20">Aucun pokémon favori trouvé.</p>;
+  }
 
   return (
     <>
-      {isLoading ? (
-        <div className="flex justify-center items-center py-20">
-          <FaSpinner className="animate-spin text-4xl text-sky-500" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4">
-          {filteredPokemons.map((pokemon) => {
-            const id = getIdFromUrl(pokemon.url);
-            const details = pokemonDetails[pokemon.name];
-            const bgColor = backgroundByColor[details.color] || backgroundByColor.default;
-            const isFav = favoriteList.includes(pokemon.name);
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4">
+        {favoriteList.map((name) => {
+          const details = pokemonDetails[name];
+          if (!details) return null;
 
-            return (
-              <div
-                key={pokemon.name}
-                className={`p-4 bg-gradient-to-br ${bgColor} text-slate-900 shadow-lg rounded-xl text-center flex flex-col-reverse items-center hover:scale-105 duration-200 gap-3 cursor-pointer relative`}
-                onClick={() => setSelectedPokemon(pokemon.name)}
+          const id = details.id;
+          const bgColor = backgroundByColor[details.color] || backgroundByColor.default;
+          const isFav = favoriteList.includes(name);
+
+          return (
+            <div
+              key={name}
+              className={`p-4 bg-gradient-to-br ${bgColor} text-slate-900 shadow-lg rounded-xl text-center flex flex-col-reverse items-center hover:scale-105 duration-200 gap-3 cursor-pointer relative`}
+              onClick={() => setSelectedPokemon(name)}
+            >
+              <button
+                className="absolute top-2 right-2 text-xl z-10"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(name);
+                }}
               >
-                {/* Bouton coeur */}
-                <button
-                  className="absolute top-2 right-2 text-xl z-10"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Ne pas ouvrir le modal
-                    toggleFavorite(pokemon.name);
-                  }}
-                >
-                  <span className={`text-2xl transition duration-200 ${isFav ? 'text-red-600' : 'text-white/70'}`}>
-                    {isFav ? '❤️' : '🤍'}
-                  </span>
-                </button>
+                <Trash2 className="w-5 h-5 text-red-500 hover:text-red-700 cursor-pointer" />
+              </button>
 
-                <p className="text-sm italic capitalize">
-                  {details.types.map(t => t.type.name).join(', ')}
-                </p>
-                <p className="font-bold capitalize">{pokemon.name}</p>
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-                  alt={pokemon.name}
-                  className="mx-auto w-40 h-40 object-contain drop-shadow-md rounded-full p-2 mb-2 bg-white/30"
-                />
+              <p className="text-sm italic capitalize">
+                {details.types.map(t => t.type.name).join(', ')}
+              </p>
+              <p className="font-bold capitalize">{name}</p>
+              <img
+                src={details.sprites.other['official-artwork'].front_default}
+                alt={name}
+                className="mx-auto w-40 h-40 object-contain drop-shadow-md rounded-full p-2 mb-2 bg-white/30"
+              />
               <p className="text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm bg-white/30 text-gray-800 shadow-sm">
                 #{id.toString().padStart(3, '0')}
               </p>
-              </div>
-            );
-          })}
-        </div>
-      )}
+            </div>
+          );
+        })}
+      </div>
 
-      {/* Modal */}
       {selectedPokemon && pokemonDetails[selectedPokemon] && (
         <Details
           pokemon={{
@@ -178,4 +168,4 @@ function PokemonCard({ activeTypes, searchQuery }) {
   );
 }
 
-export default PokemonCard;
+export default FavoritePokemonList;

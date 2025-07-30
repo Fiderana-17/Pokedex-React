@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 function HeroSection() {
   return (
-    <section className=" mx-auto px-20 py-20 flex flex-col items-center md:flex-row gap-12">
-        <div className="md:w-1/2">
+    <section className=" mx-auto px-20 py-20 flex flex-col items-center md:flex-row md:ml-52 gap-14">
+        <div className="md:w-1/2" >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-red-600 via-yellow-500 to-blue-600 bg-clip-text text-transparent">
                 Découvrez l'univers Pokémon comme jamais auparavant
             </h2>
@@ -35,4 +35,4 @@ function HeroSection() {
   );
 };
 
-export default HeroSection
+export default HeroSection;

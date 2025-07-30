@@ -5,18 +5,25 @@ import PokemonCard from '../components/PokemonCard';
 import FilterPokemon from '../components/ui/FilterPokemon';
 
 function PokemonPage() {
-  const [activeTypes, setActiveTypes] = useState(['tout']);
+  const [activeTypes, setActiveTypes] = useState(['all']);
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-red-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 text-slate-800 dark:text-white">
       <Header />
       <main className='px-5 pt-10 pb-20'>
-        <FilterPokemon activeTypes={activeTypes} setActiveTypes={setActiveTypes} />
-        <PokemonCard activeTypes={activeTypes} />
+        <FilterPokemon
+          activeTypes={activeTypes}
+          setActiveTypes={setActiveTypes}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+        <PokemonCard activeTypes={activeTypes} searchQuery={searchQuery} />
       </main>
       <Footer />
     </div>
   );
 }
+
 
 export default PokemonPage;
