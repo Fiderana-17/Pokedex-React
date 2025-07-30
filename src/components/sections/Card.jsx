@@ -20,7 +20,7 @@ export default function Card({ pokemon, onClick }) {
 
   return (
     <div
-      className="rounded-2xl flex flex-col items-center p-4 cursor-pointer hover:scale-105 transition duration-200 relative"
+      className="rounded-2xl flex flex-col items-center p-4 cursor-pointer hover:scale-105 transition duration-200 relative "
       style={{ backgroundColor: bgColor }}
       onClick={() => onClick(pokemon)}
     >

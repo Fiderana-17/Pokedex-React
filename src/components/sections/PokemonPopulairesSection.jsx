@@ -14,13 +14,13 @@ export default function PokemonPopulairesSection() {
   useEffect(() => {
     const fetchPokemons = async () => {
       const results = await Promise.all(populaires.map(name => pokemon(name)));
-      setPokemons(results.filter(Boolean)); // pour enlever les erreurs null
+      setPokemons(results.filter(Boolean)); 
     };
     fetchPokemons();
   }, []);
 
   return (
-    <section className={`p-6 flex flex-col transition-colors duration-300 ${isDark ?   'bg-white' :'bg-gray-900 '} `}>;
+    <section className={`p-6 flex flex-col transition-colors duration-300 ${isDark ?   'bg-white' :'bg-gray-900 '} `}>
       <h2 className= {`text-4xl font-bold mb-4 text-center  transition-colors duration-300 ${isDark ? 'text-gray-800':'text-white'} `}>
         Pokémon Populaires
       </h2>

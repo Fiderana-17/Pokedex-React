@@ -31,11 +31,11 @@ function TypesPokemonSection() {
                             key={index}
                             className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
                         >
-                            <CardHeader className="text-center p-4">
+                            <CardHeader className={`text-center p-4 transition-colors duration-300  rounded-xl ${ isDark ? 'bg-white text-gray-900' : 'bg-gray-900 text-white'} `}>
                             <div
                                 className={`w-16 h-16 mx-auto bg-gradient-to-r ${type.color} rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}
                             >
-                                <type.icon className="w-8 h-8 text-white" />
+                                <type.icon className="w-8 h-8 " />
                             </div>
                             <CardTitle className="text-lg">{type.name}</CardTitle>
                             <CardDescription>{type.count} Pokémon</CardDescription>
