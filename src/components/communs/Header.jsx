@@ -61,7 +61,7 @@ const Header = () => {
   return (
     <header
       className={`border-b sticky top-0 z-50 backdrop-blur-sm transition-colors duration-300 ${
-        isDark ? 'bg-gray-900 border-b-white' : 'bg-white border-b-amber-400'
+        isDark ? 'bg-gray-900 border-b-white' : 'bg-white border-b-gray-800'
       }`}
     >
       <div className="container mx-auto px-4 py-4">
